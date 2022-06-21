@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    BigInt @default(autoincrement()) @id
+  email String  @unique
+  name  String?
+  todos Todo[]
+
+  @@map("users")
+}
+
+model Todo {
+  id        BigInt @default(autoincrement()) @id
+  title     String
+  content   String?
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  BigInt?
+
+  @@map("todos")
+}
